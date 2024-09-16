@@ -1,6 +1,6 @@
-import Header from "../components/Header";
+import Header from "./HeaderBlock";
 import LayoutWrapper from "../components/LayoutWrapper";
-import MainBlock from "../components/MainBlock";
+import MainBlock from "./MainBlock";
 
 export default function Layout() {
   return (

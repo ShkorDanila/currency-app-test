@@ -8,7 +8,14 @@ export default {
         Roboto: ["Roboto"],
       },
       backgroundColor: {
-        mainBackground: "#0d1421"
+        mainBackground: "#0d1421",
+        modalBackground: "#152033",
+      },
+      colors: {
+        borderColor: "#323546",
+      },
+      padding: {
+        borderPadding: "1.25rem"
       }
     },
   },

@@ -1,6 +1,6 @@
 import { useState } from "react"
 import Modal from "./Modal"
-import HeaderText from "./HeaderText"
+import {Text} from "./Text"
 
 export default function AssetsPortfolio () {
 
@@ -9,20 +9,13 @@ export default function AssetsPortfolio () {
     const handleModalClick = () => {
         setIsModalVisible((prev: boolean) => !prev)
     }
-    
-//     <div>
-//     <div className=" absolute cursor-pointer w-full h-full">
-//         <div className="focus:bg-black focus:w-56 focus:h-56"></div>
-//     </div>
-
-// </div>
 
      return (
-        <div onClick={handleModalClick}>
-        <HeaderText>134,32 USD +2,38 (1,80 %)</HeaderText>
-        <Modal isVisible={isModalVisible} onClick={handleModalClick}>
-            Modal
-        </Modal>
+        <div className=' p-3 rounded-md border-borderColor border-[2px]  cursor-pointer' onClick={handleModalClick}>
+            <Text variant={"utility"}>134,32 USD</Text>&nbsp;<Text variant={'priceUp'}>+2,38 (1,80 %)</Text>
+            <Modal isVisible={isModalVisible} className="border-borderColor border-2 p-5 bg-modalBackground rounded-xl grid place-items-center"  onClick={handleModalClick}>
+                Modal
+            </Modal>
         </div>
      )
 }

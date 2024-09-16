@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom"
 
 const MainBlock = () => {
     return (
-        <main>
+        <main className=" flex-grow p-borderPadding">
             <Outlet/>
         </main>
     )
