@@ -1,12 +1,11 @@
 import Header from "./HeaderBlock";
-import LayoutWrapper from "../components/LayoutWrapper";
 import MainBlock from "./MainBlock";
 
 export default function Layout() {
   return (
-    <LayoutWrapper>
+    <div className="flex flex-col w-screen h-screen bg-mainBackground font-Roboto">
       <Header/>
       <MainBlock/>
-    </LayoutWrapper>
+    </div>
   )
 }

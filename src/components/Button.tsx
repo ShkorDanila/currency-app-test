@@ -3,7 +3,7 @@ import { cn } from "../utils/tailwindUtil";
 
 const Button: React.FC<Props> = ({ children, className, ...props}) => {
     return (
-        <button className={cn(" border-borderColor bg-transparent border-2 px-3 py-1 rounded-md hover:bg-mainBackground", className)} {...props}>{children}</button>
+        <button className={cn(" border-borderColor bg-transparent border-2 px-3 py-1 rounded-md hover:bg-modalBackground", className)} {...props}>{children}</button>
     );
 }
 
