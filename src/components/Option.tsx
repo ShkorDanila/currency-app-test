@@ -40,7 +40,7 @@ const Option: React.FC<OptionProps> = ({ className, options, ...props}) => {
                 onChange={handleOpenClick}
                 checked={isOpened} 
                 type="checkbox" 
-                className={cn(" appearance-none absolute h-full w-full cursor-pointer top-0 left-0", className)} 
+                className={cn("appearance-none absolute h-full w-full cursor-pointer top-0 left-0", className)} 
                 {...props}/>
         </div>
         { isOpened && 

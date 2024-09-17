@@ -8,7 +8,7 @@ interface OptionUnit extends Props {
 
 const OptionUnit: React.FC<OptionUnit> = ({ className, value, ...props}) => {
     return (
-        <div className={cn("cursor-pointer border-borderColor w-full bg-transparent border-2 px-3 py-1 rounded-md text-secondary hover:bg-modalBackground", className)} {...props}><Text variant={'utility'}>{value}</Text></div>
+        <div className={cn("cursor-pointer bg-mainBackground border-borderColor w-full border-2 px-3 py-1 rounded-md text-secondary hover:bg-modalBackground", className)} {...props}><Text variant={'utility'}>{value}</Text></div>
     );
 }
 
