@@ -11,13 +11,13 @@ const textVariants = cva(
         variants: {
             variant: {
                 normal:
-                    'font-semibold text-sm md:text-md text-white',
+                    'font-semibold text-md text-white',
                 utility:
-                    'text-sm text-[#9ba2b5]',
+                    'text-sm text-secondary',
                 priceUp:
-                    'font-semibold text-sm md:text-md text-green-600',
+                    'font-semibold text-sm text-green-600',
                 priceDown:
-                    'font-semibold text-sm md:text-md text-red-600',
+                    'font-semibold text-sm text-red-600',
             }
         },
         defaultVariants: {

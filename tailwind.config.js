@@ -13,6 +13,7 @@ export default {
       },
       colors: {
         borderColor: "#323546",
+        secondary: "#9ba2b5"
       },
       padding: {
         borderPadding: "1.25rem"

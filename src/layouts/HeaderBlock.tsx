@@ -1,4 +1,4 @@
-import AssetsPortfolio from "../components/AssetsPortfolio";
+import AssetsPortfolio from "./AssetsPortfolioBlock";
 import {Text} from "../components/Text";
 
 export default function Header () {
