@@ -16,7 +16,7 @@ export default function CoinTablePage () {
                 </div>
             </div>
             <Table>
-                <TableRow className="justify-evenly">
+                <TableRow className="justify-evenly cursor-pointer">
                     <Text>BTC</Text>
                     <img src="https://assets.coincap.io/assets/icons/btc@2x.png" className="w-8"></img>
                     <Text>$ 0.00</Text>
@@ -25,6 +25,10 @@ export default function CoinTablePage () {
                     <Button><Text variant='utility'>Add</Text></Button>
                 </TableRow>
             </Table>
+            <div className=" flex items-center gap-4">
+                <Button className=" w-24"><Text variant='utility'>Previous</Text></Button>
+                <Button className=" w-24"><Text variant='utility'>Next</Text></Button>
+            </div>
         </div>
     )
 }
