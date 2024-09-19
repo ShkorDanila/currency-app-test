@@ -3,15 +3,20 @@ import { cn } from "../utils/tailwindUtil";
 import dropdownArrow from "../assets/dropdown-arrow-svgrepo-com.svg"
 import { Text } from "./Text";
 import OptionUnit from "./OptionUnit";
+import { CustomClickHandlerType } from "../utils/types";
+
+
 
 interface OptionProps extends InputHTMLAttributes<HTMLInputElement> {
     options: string[]
+    initial: string,
+    onOptionChange: CustomClickHandlerType
 }
 
-const Option: React.FC<OptionProps> = ({ className, options, ...props}) => {
+const Option: React.FC<OptionProps> = ({ className, options, initial, onOptionChange,...props}) => {
 
     const [isOpened, setIsOpened] = useState(false)
-    const [currentOption, setCurrentOption] = useState("Choose an option")
+    const [currentOption, setCurrentOption] = useState(initial)
     const [optionValues, setOptionValues] = useState([<></>])
 
     const handleOpenClick = (e: SyntheticEvent<HTMLInputElement>) => {
@@ -19,6 +24,7 @@ const Option: React.FC<OptionProps> = ({ className, options, ...props}) => {
     }
 
     const handleOptionClick = (value: string) => () => {
+        onOptionChange(value)
         setCurrentOption(value)
         setIsOpened((prev) => !prev)
     }

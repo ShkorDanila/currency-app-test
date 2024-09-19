@@ -6,18 +6,18 @@ interface TextProps extends Props, VariantProps<typeof textVariants> {
 }
 
 const textVariants = cva(
-    "text-white",
+    "text-white w-fit text-sm md:text-base lg:text-lg xl:text-lg text-center",
     {
         variants: {
             variant: {
                 normal:
-                    'font-semibold text-md text-white',
+                    'font-semibold text-white',
                 utility:
-                    'text-sm text-secondary',
+                    'text-secondary',
                 priceUp:
-                    'font-semibold text-sm text-green-600',
+                    'font-semibold text-green-600',
                 priceDown:
-                    'font-semibold text-sm text-red-600',
+                    'font-semibold  text-red-600',
             }
         },
         defaultVariants: {

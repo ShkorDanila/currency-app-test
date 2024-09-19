@@ -17,12 +17,9 @@ export default {
       },
       padding: {
         borderPadding: "1.25rem"
-      }
+      },
     },
   },
   plugins: [
-    require('flowbite/plugin')({
-      charts: true,
-    }),
   ],
 };

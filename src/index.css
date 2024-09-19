@@ -4,6 +4,6 @@
 @tailwind components;
 @tailwind utilities;
 
-.unset {
-    all: unset;
+html, body, #root {
+    height: 100%;
 }
