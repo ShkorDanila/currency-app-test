@@ -11,7 +11,7 @@ export default {
       default: "",
     },
     isVisible: {
-      default: true
+      default: true,
     },
     children: {
       type: "string",
@@ -21,6 +21,10 @@ export default {
   },
 };
 
-const Template = (arg: unknown[]) => <Modal isVisible {...arg}>Add</Modal>;
+const Template = (arg: unknown[]) => (
+  <Modal isVisible {...arg}>
+    Add
+  </Modal>
+);
 
 export const ButtonStory = Template.bind({});

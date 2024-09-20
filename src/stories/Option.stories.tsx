@@ -1,4 +1,3 @@
-
 import Option from "components/Option";
 import "../index.css";
 
@@ -24,6 +23,13 @@ export default {
   },
 };
 
-const Template = (arg: unknown[]) => <Option initial="Init" options={["1",'2','3']} onOptionChange={()=>{}} {...arg}></Option>;
+const Template = (arg: unknown[]) => (
+  <Option
+    initial='Init'
+    options={["1", "2", "3"]}
+    onOptionChange={() => {}}
+    {...arg}
+  ></Option>
+);
 
 export const ButtonStory = Template.bind({});

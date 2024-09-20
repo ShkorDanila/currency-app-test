@@ -14,10 +14,10 @@ export default {
       type: "string",
       name: "placeholder",
       default: "0",
-    }
+    },
   },
 };
 
-const Template = (arg: unknown[]) => <Input placeholder="0" {...arg}></Input>;
+const Template = (arg: unknown[]) => <Input placeholder='0' {...arg}></Input>;
 
 export const ButtonStory = Template.bind({});
