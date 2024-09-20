@@ -2,7 +2,7 @@ import { Text } from "../components/Text";
 import Input from "../components/Input";
 import Button from "../components/Button";
 import Modal from "../components/Modal";
-import { ClickHandlerType, SmallCoinType } from "../utils/types";
+import { ClickHandlerType, CoinType } from "../utils/types";
 import { formatCost } from "../utils/utilFuncs";
 import { ChangeEvent, SyntheticEvent, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -11,7 +11,7 @@ import { addCoin } from "../store/slice/portfolioSlice";
 interface CoinModalProps {
     isVisible: boolean,
     onModalClick: ClickHandlerType,
-    coin?: SmallCoinType
+    coin?: CoinType
 }
 const CoinModal: React.FC<CoinModalProps> = ({ isVisible, onModalClick, coin }) => {
 
@@ -26,13 +26,7 @@ const CoinModal: React.FC<CoinModalProps> = ({ isVisible, onModalClick, coin }) 
         setCount(e.target.value)
     }
     const handleAddClick = (e: SyntheticEvent) => {
-        const countN = Number(count)
-
-        if(countN <= 0 || count.length > 3)
-            return;
-
-        dispatch(addCoin({id: coin?.id, count: countN}))
-        setCount("")
+        dispatch(addCoin(Object.assign({}, coin, { count: Number(count)})))
         onModalClick(e)
     }
 
@@ -42,11 +36,11 @@ const CoinModal: React.FC<CoinModalProps> = ({ isVisible, onModalClick, coin }) 
                         <img src={`https://assets.coincap.io/assets/icons/${coin?.symbol.toLocaleLowerCase()}@2x.png`} className="w-10"></img>
                         <Text>{coin?.symbol || "Not Found"}</Text>
                     </div>
-                    <div className=" flex gap-3 items-center flex-col sm:flex-row">
+                    <section className=" flex gap-3 items-center flex-col sm:flex-row">
                         <Text variant='utility'>{coin && formatCost(coin?.priceUsd.toString()) || "Not found"}</Text>
-                        <Input type='number' onChange={handleCountChange} value={count} placeholder="0"></Input>
+                        <Input type="number" onChange={handleCountChange} value={count} placeholder="0"></Input>
                         <Button onClick={handleAddClick}><Text>Add</Text></Button>
-                    </div>
+                    </section>
             </Modal>
     )
 }

@@ -18,7 +18,18 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "baseUrl": "src",
+    "paths": {
+      "components/*": ["components/*"],
+      "api/*": ["api/*"],
+      "constants/*": ["constants/*"],
+      "hooks/*": ["hooks/*"],
+      "pages/*": ["pages/*"],
+      "routes/*": ["Routes/*"],
+      "store/*": ["store/*"],
+      "utils/*": ["utils/*"]
+    }
   },
-  "include": ["src"]
+  "include": ["vite.config.ts", "src", "cypress/e2e/modal_e2e.cy.js"]
 }

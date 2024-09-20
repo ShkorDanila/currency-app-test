@@ -30,6 +30,22 @@ export interface CoinType {
     vwap24Hr: string | number,
     count?: number
 }
+
+export interface CoinTypeStrict {
+    id: string,
+    rank: string | number,
+    symbol: string,
+    name: string,
+    supply: string | number,
+    maxSupply: string | number,
+    marketCapUsd: string | number,
+    volumeUsd24Hr: string | number,
+    priceUsd: string | number,
+    changePercent24Hr: string | number,
+    vwap24Hr: string | number,
+    count: number
+}
+
 export interface SmallCoinType {
     id: string,
     symbol: string,

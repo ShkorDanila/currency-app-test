@@ -56,15 +56,7 @@ export default function CoinPage () {
       queryFn: () =>
         getCurrentCoinHistory(coinId?.toString() || "", Date.now() - currentTimeMode.timeoffset, Date.now(), currentTimeMode.tag),
     }) 
-    
-    // useEffect(() => {
-    //   if(!chartQuery.isPending)
-    //     setCurrentChartConfig(getChartConfig(chartQuery.data.map((item: ChartProps) =>
-    //    (new Date(item.time)).toLocaleString('en-GB', { timeZone: 'UTC' })),
-    //    chartQuery.data.map((item: ChartProps) => formatCost(item.priceUsd)),))
-    // }, [chartQuery])
-
-    
+  
     const handleBackClick = () => {
       navigate("/")
     }
@@ -108,10 +100,10 @@ export default function CoinPage () {
                 <Text variant='utility'>max supply: {coinQuery.data.maxSupply ? formatCost(coinQuery.data.maxSupply) : "not found"}</Text>
                 <Button onClick={handleCoinModalClick} ><Text variant='utility'>Add</Text></Button>
             </div>
-            <div className=" flex flex-col items-center overflow-x-auto">
+            <div className=" flex flex-col items-center overflow-hidden">
                 <Chart options={currentChartConfig.options} series={currentChartConfig.series} 
                 type="line"
-                className="w-full"
+                width="500"
               />
               <div className=" flex items-center gap-3">
                 <Button onClick={handleHourClick}><Text variant={'utility'} id="oneHourBtn">1 HOUR</Text></Button>

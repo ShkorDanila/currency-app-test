@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom"
-import Layout from "../layouts/Layout"
-import CoinTablePage from "../layouts/CoinTablePage"
+import Layout from "../layouts/Main/Layout"
 import CoinPage from "../layouts/CoinPage"
+import CoinTablePage from "../layouts/CoinTablePage/CoinTablePage"
 
 export const router = createBrowserRouter([
     {

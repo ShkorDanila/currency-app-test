@@ -1,15 +1,22 @@
-import { Text } from "../components/Text";
-import Button from "../components/Button";
-import Table from "../components/Table";
-import TableRow from "../components/TableRow";
+import { Text } from "../../components/Text";
+import Button from "../../components/Button";
+import Table from "../../components/Table";
+import TableRow from "../../components/TableRow";
 import { useNavigate } from "react-router-dom";
-import { SmallCoinType } from "../utils/types";
+import { CoinType } from "../../utils/types";
 import { SyntheticEvent, useEffect, useState } from "react";
-import { coinApi } from "../store/apis/coinsApi";
-import Loader from "../components/Loader";
-import { formatCost, marketCapComparator, marketCapComparatorDesc, normalizeText, priceComparator, priceComparatorDesc, rateComparator, rateComparatorDesc } from "../utils/utilFuncs";
-import { SORT_OPTIONS } from "../utils/configs";
-import CoinModal from "./CoinModal";
+import { coinApi } from "../../store/apis/coinsApi";
+import Loader from "../../components/Loader";
+import { formatCost,
+     marketCapComparator,
+      marketCapComparatorDesc,
+       normalizeText,
+        priceComparator,
+         priceComparatorDesc,
+          rateComparator,
+           rateComparatorDesc } from "../../utils/utilFuncs";
+import { SORT_OPTIONS } from "../../utils/configs";
+import CoinModal from "../CoinModal";
 
 interface CoinModalClickType {
     currentSearchTearm: string,
@@ -19,7 +26,7 @@ interface CoinModalClickType {
 
 const CoinTable: React.FC<CoinModalClickType> = ({ currentSearchTearm, currentSortType}) => {
     
-    const [currentCoin, setCurrentCoin] = useState<SmallCoinType>()
+    const [currentCoin, setCurrentCoin] = useState<CoinType>()
     const [isCoinModalOpened, setIsCoinModalOpened] = useState(false)
 
     const { data, isLoading, isError } = coinApi.useFetchAllCoinsQuery("")
@@ -32,7 +39,7 @@ const CoinTable: React.FC<CoinModalClickType> = ({ currentSearchTearm, currentSo
         setIsCoinModalOpened(!isCoinModalOpened);
         e.stopPropagation()
     }
-    const handleModalCoinClick = (value: SmallCoinType) => {
+    const handleModalCoinClick = (value: CoinType) => {
         setCurrentCoin(value)
         setIsCoinModalOpened((prev: boolean) => !prev);
     }
@@ -82,20 +89,20 @@ const CoinTable: React.FC<CoinModalClickType> = ({ currentSearchTearm, currentSo
                     .includes(normalizeText(currentSearchTearm))
                     ))
                     .sort(getSortType(currentSortType))
-                    .slice(currentPage*7,currentPage*7+7).map(({id, symbol, priceUsd, changePercent24Hr, marketCapUsd}) => 
+                    .slice(currentPage*7,currentPage*7+7).map((coin) => 
                     (
-                        <TableRow id={id} onClick={handleCoinClick(id)} className="justify-evenly cursor-pointer">
+                        <TableRow id={coin.id} onClick={handleCoinClick(coin.id)} className="justify-evenly cursor-pointer">
                             <div className=" flex flex-col flex-1">
-                                <img className=" w-4 sm:w-6 md:w-8" src={`https://assets.coincap.io/assets/icons/${symbol.toLocaleLowerCase()}@2x.png`}/>
-                                <Text>{symbol}</Text>
+                                <img className=" w-4 sm:w-6 md:w-8" src={`https://assets.coincap.io/assets/icons/${coin.symbol.toLocaleLowerCase()}@2x.png`}/>
+                                <Text>{coin.symbol}</Text>
                             </div>
-                            <Text variant='utility' className=" flex-1">$ {formatCost(priceUsd.toString())}</Text>
-                            <Text variant='utility' className="hidden md:inline flex-1">$ {formatCost(marketCapUsd.toString())}</Text>
-                            <Text className=" flex-1" variant={Number(Number(changePercent24Hr).toFixed(2)) > 0 ? 'priceUp' : (Number(Number(changePercent24Hr).toFixed(2)) < 0 ? 'priceDown' : 'utility')}>
-                                {Number(Number(changePercent24Hr).toFixed(2))}%
+                            <Text variant='utility' className=" flex-1">$ {formatCost(coin.priceUsd.toString())}</Text>
+                            <Text variant='utility' className="hidden md:inline flex-1">$ {formatCost(coin.marketCapUsd.toString())}</Text>
+                            <Text className=" flex-1" variant={Number(Number(coin.changePercent24Hr).toFixed(2)) > 0 ? 'priceUp' : (Number(Number(coin.changePercent24Hr).toFixed(2)) < 0 ? 'priceDown' : 'utility')}>
+                                {Number(Number(coin.changePercent24Hr).toFixed(2))}%
                             </Text>
                             <Button className=" flex-1" onClick={(e: SyntheticEvent) => {   
-                                handleModalCoinClick({id, symbol, priceUsd})
+                                handleModalCoinClick(coin)
                                 handleModalClick(e)
                             }}><Text variant='utility'>Add</Text></Button>
                         </TableRow>

@@ -13,6 +13,7 @@ import {
 import storage from 'redux-persist/lib/storage';
 import { portfolioSlice } from './slice/portfolioSlice';
 import { coinApi } from './apis/coinsApi';
+import { currentPortfolioSlice } from './slice/currentPortfolioSlice ';
 
 const persistConfig = {
   key: 'root',
@@ -21,6 +22,7 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
     portfolioReducer: portfolioSlice.reducer,
+    currentPortfolioReducer: currentPortfolioSlice.reducer,
     [coinApi.reducerPath]: coinApi.reducer
 });
 

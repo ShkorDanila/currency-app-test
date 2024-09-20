@@ -1,9 +1,9 @@
-import AssetsPortfolio from "./AssetsPortfolioBlock";
-import {Text} from "../components/Text";
-import { coinApi } from "../store/apis/coinsApi";
+import AssetsPortfolio from "../Portfolio/AssetsPortfolioBlock";
+import {Text} from "../../components/Text";
+import { coinApi } from "../../store/apis/coinsApi";
 import { useEffect, useState } from "react";
-import { CoinType } from "../utils/types";
-import { formatCost } from "../utils/utilFuncs";
+import { CoinType } from "../../utils/types";
+import { formatCost } from "../../utils/utilFuncs";
 
 export default function Header () {
 

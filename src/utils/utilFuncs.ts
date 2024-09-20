@@ -1,17 +1,46 @@
 import { CoinType } from "./types"
 
+const BILLION = 1000000000;
+const MILLION = 1000000;
+const THOUSAND = 1000;
+
 export const formatCost = (cost: string) => {
-    const formatted = Number(cost).toFixed(0)
-    if(Number(formatted) >= 1000000000) {
-        return formatted.slice(0, formatted.length-9) + "." + formatted.slice(-9).slice(0,2) + "b"
+    let text = "";
+    let item = Number(cost)
+    if (item < 0) {
+      item *= -1;
     }
-    if(Number(formatted) >= 1000000) {
-        return formatted.slice(0, formatted.length-6) + "." + formatted.slice(-6).slice(0,2) + "m"
+    if (item / BILLION > 1) {
+      text +=
+        (Number(item) / BILLION).toFixed(2).toString() + "b";
+      return text;
     }
-    if(Number(formatted) >= 1000) {
-        return formatted.slice(0, formatted.length-3) + "." + formatted.slice(-3).slice(0,2) + "k"
+    if (item / MILLION > 1) {
+      text +=
+        (Number(item) / MILLION).toFixed(2).toString() + "m";
+      return text;
     }
-    return Number(Number(cost).toFixed(2)).toString()
+    if (item / THOUSAND > 1) {
+      text +=
+        (Number(item) / THOUSAND).toFixed(2).toString() + "k";
+      return text;
+    }
+    if (item <= 10 / BILLION) {
+      text +=
+        (Number(item) * BILLION).toFixed(2).toString() + "e-9";
+      return text;
+    }
+    if (item <= 10 / MILLION) {
+      text +=
+        (Number(item) * THOUSAND).toFixed(2).toString() + "e-6";
+      return text;
+    }
+    if (item <= 10 / THOUSAND) {
+      text +=
+        (Number(item) * THOUSAND).toFixed(2).toString() + "e-3";
+      return text;
+    }
+    return item.toFixed(2).toString();
 }
 
 export const normalizeText = (text: string) => {

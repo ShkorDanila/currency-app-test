@@ -9,7 +9,11 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "start": "npm run dev",
+    "test": "start-server-and-test start http://localhost:5173 cypress",
+    "sb": "storybook dev -p 6006",
+    "cypress": "cypress run"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.7",
@@ -45,17 +49,22 @@
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react-swc": "^3.5.0",
     "autoprefixer": "^10.4.20",
+    "cypress": "^13.14.2",
     "eslint": "^9.9.0",
     "eslint-plugin-react-hooks": "^5.1.0-rc.0",
     "eslint-plugin-react-refresh": "^0.4.9",
     "eslint-plugin-storybook": "^0.8.0",
     "globals": "^15.9.0",
+    "nyc": "^17.1.0",
+    "playwright-test-coverage": "^1.2.12",
     "postcss": "^8.4.47",
+    "start-server-and-test": "^2.0.8",
     "storybook": "^8.3.0",
     "tailwindcss": "^3.4.11",
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.0.1",
-    "vite": "^5.4.1"
+    "vite": "^5.4.1",
+    "vite-plugin-istanbul": "^6.0.2"
   },
   "eslintConfig": {
     "extends": [

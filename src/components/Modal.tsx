@@ -24,10 +24,10 @@ const modalVariants = cva(
 
 const Modal: React.FC<ModalProps> = ({ children, isVisible, className, variant, onClick }) => {
     return isVisible ? (
-        <div onClick={onClick} className="absolute w-screen h-screen backdrop-blur-sm left-0 top-0 grid place-items-center z-50">
-            <div className={cn(modalVariants({variant, className}), "w-fit")} onClick={(e: SyntheticEvent) => e.stopPropagation()}>
+        <div onClick={onClick} className=" bg-transparent absolute w-screen h-screen backdrop-blur-sm left-0 top-0 grid place-items-center z-50">
+            <dialog className={cn(modalVariants({variant, className}), "w-fit")} onClick={(e: SyntheticEvent) => e.stopPropagation()}>
                 { children }
-            </div>
+            </dialog>
         </div>
     ) : null;
 }

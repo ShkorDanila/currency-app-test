@@ -1,34 +1,29 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { PortfolioType } from "../../utils/types";
+import { PortfolioAction, PortfolioState } from "../types/portfolio";
 
-export const ADD_ITEM = "ADD_ITEM";
-export const DELETE_ITEM = "DELETE_ITEM";
-
-const initialState:  PortfolioType[] = []
+const initialState: PortfolioState = {
+  items: [],
+};
 
 export const portfolioSlice = createSlice({
   name: "portfolio",
   initialState: initialState,
   reducers: {
-      addCoin(state, action) {
-        const {id, count} = action.payload
-        const needed = state.find((item) => item.id === id)
-        if(!needed) {
-          state.push({id,count})
-          return;
+      addCoin(state: PortfolioState, action: PortfolioAction) {
+        const index = state.items.find((item) => item.id == action.payload.id);
+        
+        if (index) {
+          index.count += action.payload.count;
+          state.items = state.items.filter((n) => n.id !== action.payload.id);
+          state.items.push(index);
+        } else {
+        state.items.push(action.payload);
         }
-        needed.count += count;
       },
-      removeCoin(state, action) {
-        const {id, count} = action.payload
-        const needed = state.find((item) => item.id === id)
-        if(needed) {
-          if((needed.count - count) <= 0) {
-            return state.filter((item) => item.id !== id)
-          }
-          else {
-            needed.count -= count
-          }
+      removeCoin(state: PortfolioState, action: PortfolioAction) {
+        state.items = state.items.filter((n) => n.id !== action.payload.id);
+          if (action.payload.count > 0) {
+        state.items.push(action.payload);
         }
       }
 }});

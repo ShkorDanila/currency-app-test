@@ -1,9 +1,9 @@
 import { ChangeEvent, useState } from "react";
-import Input from "../components/Input";
-import Option from "../components/Option";
-import { Text } from "../components/Text";
 import CoinTable from "./CoinTable";
-import { SORT_OPTIONS } from "../utils/configs";
+import { SORT_OPTIONS } from "../../utils/configs";
+import Option from "../../components/Option";
+import { Text } from "../../components/Text";
+import Input from "../../components/Input";
 
 export default function CoinTablePage () {
 
