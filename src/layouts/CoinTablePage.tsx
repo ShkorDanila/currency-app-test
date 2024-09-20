@@ -1,20 +1,15 @@
-import { ChangeEvent, SyntheticEvent, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import Input from "../components/Input";
 import Option from "../components/Option";
 import { Text } from "../components/Text";
-import CoinModal from "./CoinModal";
 import CoinTable from "./CoinTable";
+import { SORT_OPTIONS } from "../utils/configs";
 
 export default function CoinTablePage () {
 
-    const [isCoinModalOpened, setIsCoinModalOpened] = useState(false)
     const [currentSearchTerm, setCurrentSearchTerm] = useState("")
     const [currentOption, setCurrentOption] = useState("Choose an option")
-
-    const handleModalClick = (e: SyntheticEvent) => {
-        setIsCoinModalOpened((prev: boolean) => !prev);
-        e.stopPropagation()
-    }
+    
 
     const handleSearchChange = (e:ChangeEvent<HTMLInputElement>) => {
         setCurrentSearchTerm(e.target.value)
@@ -31,12 +26,10 @@ export default function CoinTablePage () {
                 <Input onChange={handleSearchChange} className=" w-full sm:w-fit" placeholder="Search"></Input>
                 <div className="flex items-center gap-3 h-full">
                     <Text>Sort By: </Text>
-                    <Option onOptionChange={handleOptionChange} initial={currentOption} options={["Price", "Price(Desc)","Cap", "Cap(Desc)"]}></Option>
+                    <Option onOptionChange={handleOptionChange} initial={currentOption} options={Object.values(SORT_OPTIONS)}></Option>
                 </div>
             </div>
-
-            <CoinTable onModalClick={handleModalClick} currentSortType={currentOption} currentSearchTearm={currentSearchTerm}/>
-            <CoinModal isVisible={isCoinModalOpened} onModalClick={handleModalClick}/>
+            <CoinTable currentSortType={currentOption} currentSearchTearm={currentSearchTerm}/>
         </div>
         </>
     )

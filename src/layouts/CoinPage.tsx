@@ -1,39 +1,40 @@
 import { useNavigate, useParams } from "react-router-dom"
 import { Text } from "../components/Text"
 import Button from "../components/Button"
-import { SyntheticEvent, useState } from "react"
-import Modal from "../components/Modal"
-import Input from "../components/Input"
+import { SyntheticEvent, useEffect, useState } from "react"
 import Chart from "react-apexcharts"
-import { getCurrentCoin } from "../api/coinApi"
+import { getCurrentCoin, getCurrentCoinHistory } from "../api/coinApi"
 import { useQuery } from "@tanstack/react-query"
 import Loader from "../components/Loader"
-import { formatCost } from "../utils/utilFuncs"
+import { formatCost, getChartConfig } from "../utils/utilFuncs"
+import CoinModal from "./CoinModal"
+import { queryClient } from "../main"
 
-const config = {
-    options: {
-      chart: {
-        id: "basic-bar"
-      },
-      xaxis: {
-        categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999]
-      }
-    },
-    series: [
-      {
-        name: "series-1",
-        data: [30, 40, 45, 50, 49, 60, 70, 91]
-      }
-    ],
-    stroke: {
-      curve: 'smooth',
-    }
-    
-  };
+interface ChartProps {
+  priceUsd: string,
+  time: number
+}
+
+const TimeOptions = {
+  horly: {
+    timeoffset: 3600000,
+    tag: "m1"
+  },
+  bidaily: {
+    timeoffset: 43196400,
+    tag: "m30"
+  },
+  daily: {
+    timeoffset: 90000000,
+    tag: "h1"
+  }
+}
 
 export default function CoinPage () {
 
     const [isCoinModalOpened, setIsCoinModalOpened] = useState(false)
+    const [currentTimeMode, setCurrentTimeMode] = useState<typeof TimeOptions.horly>(TimeOptions.horly)
+    const [currentChartConfig, setCurrentChartConfig] = useState(() => getChartConfig([],[]))
 
     const handleCoinModalClick = (e: SyntheticEvent) => {
         setIsCoinModalOpened((prev: boolean) => !prev);
@@ -44,61 +45,84 @@ export default function CoinPage () {
 
     const {coinId} = useParams()
 
-    const { isPending, error, data } = useQuery({
+    const coinQuery = useQuery({
       queryKey: ['coin'],
       queryFn: () =>
         getCurrentCoin(coinId?.toString() || "bitcoin")
     }) 
+    
+    const chartQuery = useQuery({
+      queryKey: ['chart-data'],
+      queryFn: () =>
+        getCurrentCoinHistory(coinId?.toString() || "", Date.now() - currentTimeMode.timeoffset, Date.now(), currentTimeMode.tag),
+    }) 
+    
+    // useEffect(() => {
+    //   if(!chartQuery.isPending)
+    //     setCurrentChartConfig(getChartConfig(chartQuery.data.map((item: ChartProps) =>
+    //    (new Date(item.time)).toLocaleString('en-GB', { timeZone: 'UTC' })),
+    //    chartQuery.data.map((item: ChartProps) => formatCost(item.priceUsd)),))
+    // }, [chartQuery])
 
+    
     const handleBackClick = () => {
       navigate("/")
     }
 
-    if (isPending) return <Loader isVisible={isPending}/>
+    const handleHourClick = () => {
+      setCurrentTimeMode(TimeOptions.horly)
+    }
 
-    if (error) return 'An error has occurred: ' + error.message
+    const handleBiHourClick = () => {
+      setCurrentTimeMode(TimeOptions.bidaily)
+    }
+
+    const handleDayClick = () => {
+      setCurrentTimeMode(TimeOptions.daily)
+    }
+
+    useEffect(() => {
+      
+      queryClient.invalidateQueries({ queryKey: ['chart-data'] })
+      if(chartQuery.data) {
+        setCurrentChartConfig(getChartConfig(chartQuery.data.map((item: ChartProps) => (new Date(item.time)).toLocaleString('ru-RU', { timeZone: 'Europe/Moscow' })), chartQuery.data.map((item: ChartProps) => Number(Number(item.priceUsd).toFixed(2)))))
+      }
+    }, [chartQuery.data, currentTimeMode])
+
+    if (coinQuery.isPending) return <Loader isVisible={coinQuery.isPending}><img src="https://media.tenor.com/On7kvXhzml4AAAAi/loading-gif.gif" className="w-56"></img></Loader>
+
+    if (coinQuery.error && !coinQuery.data) return <Text>An error has occurred: {coinQuery.error.message}</Text>
   
     return (
       <> 
-        <div className=" flex items-center h-full justify-between relative">
-            <div className=" flex flex-col items-start gap-6 p-6">
+        <div className=" flex items-center h-full justify-evenly relative flex-col md:flex-row">
+            <div className=" flex flex-col items-start gap-3 p-6">
                 <div className=" flex items-center gap-5">
-                    <img src={`https://assets.coincap.io/assets/icons/${data.symbol.toLocaleLowerCase()}@2x.png`} className=" w-9"></img>
-                    <Text>{data.name}</Text><Text variant='utility'>{data.symbol}</Text>
+                    <img src={`https://assets.coincap.io/assets/icons/${coinQuery.data.symbol.toLocaleLowerCase()}@2x.png`} className=" w-9"></img>
+                    <Text>{coinQuery.data.name}</Text><Text variant='utility'>{coinQuery.data.symbol}</Text>
                 </div>
-                <Text variant='utility'>rank: {data.rank ? formatCost(data.rank) : "not found"}</Text>
-                <Text variant='utility'>supply: {data.supply ? formatCost(data.supply) : "not found"}</Text>
-                <Text variant='utility'>price: {data.priceUsd ? formatCost(data.priceUsd) : "not found"}</Text>
-                <Text variant='utility'>capitalisation: {data.marketCapUsd ? formatCost(data.marketCapUsd) : "not found"}</Text>
-                <Text variant='utility'>max supply: {data.maxSupply ? formatCost(data.maxSupply) : "not found"}</Text>
-                <Button onClick={handleCoinModalClick}><Text variant='utility'>Add</Text></Button>
-                <Modal isVisible={isCoinModalOpened} 
-                    onClick={handleCoinModalClick}
-                    >
-                    <div className=" flex flex-col items-center gap-3">
-                        <img src="https://assets.coincap.io/assets/icons/btc@2x.png" className="w-10"></img>
-                        <Text>BTC</Text>
-                    </div>
-                    <div className=" flex gap-3 items-center">
-                        <Text variant='utility'>0.00 $</Text>
-                        <Input placeholder="0"></Input>
-                        <Button><Text>Add</Text></Button>
-                    </div>
-                </Modal>
+                <Text variant='utility'>rank: {coinQuery.data.rank ? formatCost(coinQuery.data.rank) : "not found"}</Text>
+                <Text variant='utility'>supply: {coinQuery.data.supply ? formatCost(coinQuery.data.supply) : "not found"}</Text>
+                <Text variant='utility'>price: {coinQuery.data.priceUsd ? formatCost(coinQuery.data.priceUsd) : "not found"}</Text>
+                <Text variant='utility'>capitalisation: {coinQuery.data.marketCapUsd ? formatCost(coinQuery.data.marketCapUsd) : "not found"}</Text>
+                <Text variant='utility'>max supply: {coinQuery.data.maxSupply ? formatCost(coinQuery.data.maxSupply) : "not found"}</Text>
+                <Button onClick={handleCoinModalClick} ><Text variant='utility'>Add</Text></Button>
             </div>
-            <div className=" flex flex-col items-center">
-                <Chart options={config.options} series={config.series} 
+            <div className=" flex flex-col items-center overflow-x-auto">
+                <Chart options={currentChartConfig.options} series={currentChartConfig.series} 
                 type="line"
-                width="500"
+                className="w-full"
               />
               <div className=" flex items-center gap-3">
-                <Button><Text variant='utility'>1 HOUR</Text></Button>
-                <Button><Text variant='utility'>24 HOUR</Text></Button>
-                <Button><Text variant='utility'>1 WEEK</Text></Button>
+                <Button onClick={handleHourClick}><Text variant={'utility'} id="oneHourBtn">1 HOUR</Text></Button>
+                <Button onClick={handleBiHourClick}><Text variant={'utility'} id="twHourBtn">12 HOURS</Text></Button>
+                <Button onClick={handleDayClick}><Text variant={'utility'} id="oneDayBtn">1 DAY</Text></Button>
               </div>
             </div>
             <div className=" absolute top-0 left-0"><Button onClick={handleBackClick}><Text>Back</Text></Button></div>
         </div>
+        
+        <CoinModal isVisible={isCoinModalOpened} onModalClick={handleCoinModalClick} coin={coinQuery.data}></CoinModal>
         </>
     )
 }

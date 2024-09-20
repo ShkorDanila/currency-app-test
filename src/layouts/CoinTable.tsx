@@ -3,27 +3,39 @@ import Button from "../components/Button";
 import Table from "../components/Table";
 import TableRow from "../components/TableRow";
 import { useNavigate } from "react-router-dom";
-import { ClickHandlerType } from "../utils/types";
-import { useEffect, useState } from "react";
+import { SmallCoinType } from "../utils/types";
+import { SyntheticEvent, useEffect, useState } from "react";
 import { coinApi } from "../store/apis/coinsApi";
 import Loader from "../components/Loader";
-import { formatCost, marketCapComparator, marketCapComparatorDesc, normalizeText, priceComparator, priceComparatorDesc } from "../utils/utilFuncs";
+import { formatCost, marketCapComparator, marketCapComparatorDesc, normalizeText, priceComparator, priceComparatorDesc, rateComparator, rateComparatorDesc } from "../utils/utilFuncs";
+import { SORT_OPTIONS } from "../utils/configs";
+import CoinModal from "./CoinModal";
 
 interface CoinModalClickType {
-    onModalClick: ClickHandlerType,
     currentSearchTearm: string,
     currentSortType: string
 }
 
-const CoinTable: React.FC<CoinModalClickType> = ({onModalClick, currentSearchTearm, currentSortType}) => {
+
+const CoinTable: React.FC<CoinModalClickType> = ({ currentSearchTearm, currentSortType}) => {
     
-    const { data, isLoading, isError } = coinApi.useFetchAllCoinsQuery("", {
-        pollingInterval: 10000,
-    })
+    const [currentCoin, setCurrentCoin] = useState<SmallCoinType>()
+    const [isCoinModalOpened, setIsCoinModalOpened] = useState(false)
+
+    const { data, isLoading, isError } = coinApi.useFetchAllCoinsQuery("")
     const navigate = useNavigate()
     const [currentPage, setCurrentPage] = useState(0)
     const [tableRows, setTableRows] = useState([<></>])
+
     
+    const handleModalClick = (e: SyntheticEvent) => {
+        setIsCoinModalOpened(!isCoinModalOpened);
+        e.stopPropagation()
+    }
+    const handleModalCoinClick = (value: SmallCoinType) => {
+        setCurrentCoin(value)
+        setIsCoinModalOpened((prev: boolean) => !prev);
+    }
     const handleCoinClick = (id: string) => () => {
         navigate(`/${id}`)
     }
@@ -40,16 +52,23 @@ const CoinTable: React.FC<CoinModalClickType> = ({onModalClick, currentSearchTea
     }
 
     const getSortType = (value: string) => {
-        const norval = normalizeText(value)
-        if(norval === "price")
-            return priceComparator
-        if(norval === "price(desc)")
-            return priceComparatorDesc
-        if(norval === "cap")
-            return marketCapComparator
-        if(norval === "cap(desc)")
-            return marketCapComparatorDesc
-        return undefined;
+
+        switch(value){
+            case SORT_OPTIONS.PRICE:
+                return priceComparator
+            case SORT_OPTIONS.PRICE_DESC:
+                return priceComparatorDesc
+            case SORT_OPTIONS.CAP:
+                return marketCapComparator
+            case SORT_OPTIONS.CAP_DESC:
+                return marketCapComparatorDesc
+            case SORT_OPTIONS.RATE:
+                return rateComparator
+            case SORT_OPTIONS.RATE_DESC:
+                return rateComparatorDesc
+            default:
+            return undefined;
+        }
     }
 
     useEffect(() => {
@@ -75,18 +94,21 @@ const CoinTable: React.FC<CoinModalClickType> = ({onModalClick, currentSearchTea
                             <Text className=" flex-1" variant={Number(Number(changePercent24Hr).toFixed(2)) > 0 ? 'priceUp' : (Number(Number(changePercent24Hr).toFixed(2)) < 0 ? 'priceDown' : 'utility')}>
                                 {Number(Number(changePercent24Hr).toFixed(2))}%
                             </Text>
-                            <Button className=" flex-1" onClick={onModalClick}><Text variant='utility'>Add</Text></Button>
+                            <Button className=" flex-1" onClick={(e: SyntheticEvent) => {   
+                                handleModalCoinClick({id, symbol, priceUsd})
+                                handleModalClick(e)
+                            }}><Text variant='utility'>Add</Text></Button>
                         </TableRow>
                     )
                 )
             )
         }
-        console.log(getSortType(currentSortType));
         
     }, [data, currentSearchTearm, currentPage, currentSortType])
 
     return (
         <>
+        <CoinModal coin={currentCoin} isVisible={isCoinModalOpened} onModalClick={handleModalClick}/>
         <Table>
                 <TableRow className="justify-evenly cursor-pointer flex-1">
                             <Text className="place-self-center flex-1">Name</Text>
@@ -96,7 +118,7 @@ const CoinTable: React.FC<CoinModalClickType> = ({onModalClick, currentSearchTea
                             <Text className=" flex-1"/>
                 </TableRow>
                 {!isLoading && tableRows}
-                {isError && 
+                {(isError && !data?.data) && 
                 <TableRow>
                     <Text>An error occurred during data loading</Text>
                 </TableRow>
