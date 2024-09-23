@@ -1,6 +1,11 @@
 import Input from "components/Input";
 import "../index.css";
 
+interface InputStoriesProps {
+  placeholder: "string",
+  children: "string",
+}
+
 export default {
   title: "Input",
   component: Input,
@@ -18,6 +23,6 @@ export default {
   },
 };
 
-const Template = (arg: unknown[]) => <Input placeholder='0' {...arg}></Input>;
+const Template = (arg: InputStoriesProps) => <Input {...arg}></Input>;
 
-export const ButtonStory = Template.bind({});
+export const InputStory = Template.bind({});

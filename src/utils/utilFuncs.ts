@@ -7,6 +7,9 @@ const THOUSAND = 1000;
 export const formatCost = (cost: string) => {
   let text = "";
   let item = Number(cost);
+  if(item == 0 ) {
+    return item
+  }
   if (item < 0) {
     item *= -1;
   }

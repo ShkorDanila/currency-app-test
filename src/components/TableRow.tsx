@@ -3,7 +3,8 @@ import { Props } from "./configs";
 
 const TableRow: React.FC<Props> = ({ children, className, ...props }) => {
   return (
-    <div
+    <li
+      id={props.id}
       className={cn(
         "w-full flex justify-evenly p-3 items-center md:gap-5 border-y-[1px] border-borderColor",
         className
@@ -11,7 +12,7 @@ const TableRow: React.FC<Props> = ({ children, className, ...props }) => {
       {...props}
     >
       {children}
-    </div>
+    </li>
   );
 };
 

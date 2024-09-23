@@ -33,7 +33,7 @@ export default function AssetsPortfolio() {
     const res = ((firstSum - lastSum) / firstSum) * 100;
     return (
       <Text variant={res > 0 ? "priceUp" : res < 0 ? "priceDown" : "utility"}>
-        {res > 0 ? `+${res.toFixed(2)}%` : `-^${res.toFixed(2)}%`}
+        {res > 0 ? `+${res.toFixed(2)}%` : `-${res.toFixed(2)}%`}
       </Text>
     );
   };

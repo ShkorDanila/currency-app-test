@@ -59,7 +59,7 @@ export default function PortfolioCoin({ coinId, count }: PortfolioCoinProps) {
   return (
     <>
       {!isLoading && (
-        <TableRow>
+        <TableRow id={coinId}>
           <div className='flex items-center gap-2'>
             <Text>{data.symbol}</Text>
             <img

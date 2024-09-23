@@ -1,6 +1,12 @@
 import Modal from "components/Modal";
 import "../index.css";
 
+interface ModalStoriesProps {
+  className: "string",
+  isVisible: boolean,
+  children: "string",
+}
+
 export default {
   title: "Modal",
   component: Modal,
@@ -11,6 +17,7 @@ export default {
       default: "",
     },
     isVisible: {
+      type: "boolean",
       default: true,
     },
     children: {
@@ -21,10 +28,10 @@ export default {
   },
 };
 
-const Template = (arg: unknown[]) => (
-  <Modal isVisible {...arg}>
-    Add
+const Template = (arg: ModalStoriesProps) => (
+  <Modal {...arg}>
+    Modal
   </Modal>
 );
 
-export const ButtonStory = Template.bind({});
+export const ModalStory = Template.bind({});

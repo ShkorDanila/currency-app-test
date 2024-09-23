@@ -1,6 +1,11 @@
 import { Text } from "components/Text";
 import "../index.css";
 
+interface TextStoriesProps {
+  className: "string",
+  children: "string"
+}
+
 export default {
   title: "Text",
   component: Text,
@@ -12,18 +17,24 @@ export default {
     },
     variant: {
       type: "string",
-      description: "text style variant",
-      defaultValue: "utility",
+      description: "text component",
+      defaultValue: "priceUp",
       options: ["normal", "priceUp", "priceDown", "utility"],
+      control: {
+        type: "radio",
+      },
+      table: {
+        type: {summary: "string"},
+      }
     },
     children: {
       type: "string",
       name: "label",
-      default: "Text",
+      defaultValue: "Text",
     },
   },
 };
 
-const Template = (arg: unknown[]) => <Text {...arg}>Text</Text>;
+const Template = (arg: TextStoriesProps) => <Text {...arg}>Text</Text>;
 
-export const ButtonStory = Template.bind({});
+export const TextStory = Template.bind({});

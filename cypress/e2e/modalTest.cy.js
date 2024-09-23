@@ -1,3 +1,18 @@
+const coins = [
+  {
+    coin: "bitcoin",
+    count: 5,
+  },
+  {
+    coin: "ethereum",
+    count: 3,
+  },
+  {
+    coin: "tether",
+    count: 80,
+  },
+];
+
 describe("Modal Tests", () => {
   it("Should search input change value", () => {
     cy.visit("/");
@@ -37,5 +52,22 @@ describe("Modal Tests", () => {
     cy.visit("/bitcoin");
     cy.get("header").get("section").contains("USD").click();
     cy.get("dialog").contains("BTC");
+  });
+
+  it("Should portfolio delete values", () => {
+    coins.map(({ coin, count }) => {
+      cy.visit(`/${coin}`);
+      cy.contains("Add").click();
+      cy.get("dialog").get("section").get('input[type="number"]').type(count);
+      cy.get("dialog").contains("Add").click();
+    });
+
+    cy.get("header").get("section").contains("USD").click();
+    coins.forEach(() => {
+      cy.get("dialog").get("li").first().get("input").first().type(999);
+      cy.get("dialog").get("li").first().get("button").first().click();
+    });
+
+    cy.get("dialog").contains("No coins");
   });
 });

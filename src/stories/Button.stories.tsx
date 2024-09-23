@@ -1,5 +1,11 @@
+import { ReactNode } from "react";
 import Button from "../components/Button";
 import "../index.css";
+
+interface ButtonStoriesProps {
+  className: "string",
+  children: "string"
+}
 
 export default {
   title: "Button",
@@ -8,16 +14,19 @@ export default {
     className: {
       type: "string",
       name: "styles",
-      default: "",
+      table: {
+        defaultValue: { summary: "bg-black" },
+        type: { summary: 'string' },
+      },
     },
     children: {
       type: "string",
-      name: "label",
-      default: "Click me",
+      table: { defaultValue: { summary: "Hello world" } },
     },
   },
 };
 
-const Template = (arg: unknown[]) => <Button {...arg}>Add</Button>;
+const Template = (arg: ButtonStoriesProps) => <Button className={arg.className}>Button</Button>;
+
 
 export const ButtonStory = Template.bind({});

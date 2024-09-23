@@ -1,6 +1,15 @@
 import Option from "components/Option";
 import "../index.css";
 
+interface OptionStoriesProps {
+  className: "string",
+  initial: string,
+  children: "string",
+  onOptionChange: () => {},
+  options: string[]
+}
+
+
 export default {
   title: "Option",
   component: Option,
@@ -11,8 +20,8 @@ export default {
       default: "",
     },
     options: {
-      type: "string[]",
-      name: "options",
+      type: "array" ,
+      name: "string",
       default: "",
     },
     initial: {
@@ -23,13 +32,13 @@ export default {
   },
 };
 
-const Template = (arg: unknown[]) => (
+const Template = (arg: OptionStoriesProps) => (
   <Option
-    initial='Init'
-    options={["1", "2", "3"]}
+    initial={arg.initial}
+    className={arg.className}
     onOptionChange={() => {}}
-    {...arg}
+    options={['1','2','3']}
   ></Option>
 );
 
-export const ButtonStory = Template.bind({});
+export const OptionStory = Template.bind({});
